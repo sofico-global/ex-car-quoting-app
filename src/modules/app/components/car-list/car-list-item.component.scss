@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  margin-bottom: 1rem;
+
+  .car-image {
+    height: 175px;
+    background-color: #f1f1f1;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .description {
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-top: none;
+
+    .make {
+      color: #505050;
+    }
+
+    .model {
+      font-size: 1.375rem;
+    }
+  }
+}
