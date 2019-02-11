@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormControlMultiCheckboxComponent } from './components/form-control-multi-checkbox/form-control-multi-checkbox.component';
 import { CarService } from './services/car.service';
 import { FilterService } from './services/filter.service';
+import { ActiveSelectionComponent } from './components/active-selection/active-selection.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FilterService } from './services/filter.service';
     SummaryContainer,
     CarListComponent,
     CarListItemComponent,
-    FormControlMultiCheckboxComponent
+    FormControlMultiCheckboxComponent,
+    ActiveSelectionComponent
   ],
   imports: [
     BrowserModule,

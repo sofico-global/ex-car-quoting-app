@@ -11,7 +11,7 @@ import { SummaryContainer } from './containers/summary/summary.container';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/configurator',
+    redirectTo: '/configurator/cars',
     pathMatch: 'full'
   },
   {

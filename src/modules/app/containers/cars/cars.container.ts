@@ -12,12 +12,15 @@ import {
 } from 'rxjs';
 import { Car } from '../../types/car.type';
 import {
+  filter,
   map,
-  startWith
+  startWith,
+  switchMap
 } from 'rxjs/operators';
 import { CarService } from '../../services/car.service';
 import { FilterValue } from '../../types/filter-value.type';
 import { FilterService } from '../../services/filter.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cars',
@@ -28,6 +31,14 @@ import { FilterService } from '../../services/filter.service';
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
       <div class="col-4">
+        <div class="filters">
+          <app-active-selection *ngIf="activeSelection$ | async as activeSelection" 
+                                [car]="activeSelection"></app-active-selection>
+          <br>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, beatae commodi corporis dolor ducimus earum illum in iusto
+          nulla perferendis quis quod, recusandae temporibus? Culpa deleniti dolore itaque qui sapiente.
+        </div>
+        <br>
         <div class="filters">
           <h6>Make</h6>
           <app-form-control-multi-checkbox *ngIf="form.get('makes') as ctrl"
@@ -55,12 +66,15 @@ export class CarsContainer implements OnInit {
   form: FormGroup;
 
   // source streams
+  carId$: Observable<string>;
   cars$: Observable<Car[]>;
 
   // presentation streams
   filteredCars$: Observable<Car[]>;
+  activeSelection$: Observable<Car>;
 
   constructor(private fb: FormBuilder,
+              private activatedRoute: ActivatedRoute,
               private filterService: FilterService,
               private carService: CarService) {
   }
@@ -77,6 +91,10 @@ export class CarsContainer implements OnInit {
     });
 
     // source streams
+    this.carId$ = this.activatedRoute.params.pipe(
+      filter(params => params && params.carId),
+      map(params => params.carId),
+    );
     this.cars$ = this.carService.find();
 
     // presentation streams
@@ -84,7 +102,7 @@ export class CarsContainer implements OnInit {
       this.cars$,
       this.form.get('makes').valueChanges.pipe(startWith([])),
       this.form.get('fuelTypes').valueChanges.pipe(startWith([])),
-      this.form.get('gearboxes').valueChanges.pipe(startWith([])),
+      this.form.get('gearboxes').valueChanges.pipe(startWith([]))
     ).pipe(
       map(([cars, filterMakes, filterFuelTypes, filterGearboxes]) =>
         this.filterCars(
@@ -93,6 +111,9 @@ export class CarsContainer implements OnInit {
           filterFuelTypes,
           filterGearboxes)
       )
+    );
+    this.activeSelection$ = this.carId$.pipe(
+      switchMap(carId => this.carService.findOne(carId))
     );
   }
 
