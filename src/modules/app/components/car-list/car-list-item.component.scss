@@ -1,9 +1,10 @@
 :host {
   display: block;
   margin-bottom: 1rem;
+  cursor: pointer;
 
   .car-image {
-    height: 175px;
+    height: 150px;
     background-color: #f1f1f1;
     background-size: cover;
     background-position: center;

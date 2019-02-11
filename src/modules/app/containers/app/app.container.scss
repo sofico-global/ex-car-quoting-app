@@ -1,0 +1,12 @@
+:host {
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+
+    .logo {
+      height: 30px;
+    }
+  }
+}

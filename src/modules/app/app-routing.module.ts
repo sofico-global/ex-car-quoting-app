@@ -1,21 +1,62 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {
+  RouterModule,
+  Routes
+} from '@angular/router';
 import { CarsContainer } from './containers/cars/cars.container';
+import { ConfiguratorContainer } from './containers/configurator/configurator.container';
+import { OptionsContainer } from './containers/options/options.container';
+import { SummaryContainer } from './containers/summary/summary.container';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/cars',
+    redirectTo: '/configurator',
     pathMatch: 'full'
   },
   {
-    path: 'cars',
-    component: CarsContainer
+    path: 'configurator',
+    component: ConfiguratorContainer,
+    children: [
+      {
+        path: '',
+        redirectTo: 'cars',
+        pathMatch: 'full',
+      },
+      {
+        path: 'cars',
+        component: CarsContainer
+      }
+    ]
+  },
+  {
+    path: 'configurator/:carId',
+    component: ConfiguratorContainer,
+    children: [
+      {
+        path: '',
+        redirectTo: 'cars',
+        pathMatch: 'full',
+      },
+      {
+        path: 'cars',
+        component: CarsContainer
+      },
+      {
+        path: 'options',
+        component: OptionsContainer
+      },
+      {
+        path: 'summary',
+        component: SummaryContainer
+      }
+    ]
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {paramsInheritanceStrategy: 'always'})],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

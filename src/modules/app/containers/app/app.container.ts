@@ -5,7 +5,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.container.scss'],
   template: `
     <div class="container">
-      <h1>Sofico Leasing Services</h1>
+      <div class="nav-bar">
+        <img class="logo" src="assets/sofico-rgb-small.svg"/>
+        <a class="btn btn-secondary" href="https://www.sofico.global/jobs" target="_blank">Jobs @ Sofico</a>
+      </div>
       <router-outlet></router-outlet>
     </div>
   `

@@ -1,6 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+$theme-colors: (
+  primary: #00558c,
+  secondary: #e99635
+);
+
 @import "~bootstrap/scss/bootstrap";
 
 * {
   box-sizing: border-box;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: nowrap;
+
+  .step {
+    width: 100%;
+    padding: 1rem;
+    background-color: #dadada;
+    text-align: center;
+  }
+
+  .step-accessible:hover {
+    color: map-get($theme-colors, primary);
+    text-decoration: none;
+    background-color: #d3d3d3;
+  }
+
+  .active, .active:hover {
+    color: #fff;
+    background-color: map-get($theme-colors, primary);
+    text-decoration: none;
+  }
+}
+
+.filters {
+  border: 1px solid #eee;
+  padding: 1rem;
 }
