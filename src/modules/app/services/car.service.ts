@@ -4,7 +4,6 @@ import {
   of
 } from 'rxjs';
 import { Car } from '../types/car.type';
-import { error } from '@angular/compiler/src/util';
 
 @Injectable()
 export class CarService {
@@ -88,12 +87,6 @@ export class CarService {
   }
 
   findOne(carId: string): Observable<Car> {
-    const res = this.cars.find(car => car.carId === carId);
-
-    if (res) {
-      return of(res);
-    }
-
-    return error('carId not found');
+    return of(this.cars.find(car => car.carId === carId));
   }
 }
