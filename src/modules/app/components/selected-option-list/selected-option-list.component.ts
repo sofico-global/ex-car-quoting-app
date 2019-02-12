@@ -11,7 +11,7 @@ import { Option } from '../../types/option.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h5>Selected options</h5>
-    <div *ngFor="let option of selectedOptions" class="list-item">
+    <div *ngFor="let option of selectedOptions" class="d-flex justify-content-between">
       <div>{{option?.description}}</div>
       <div>{{option?.price | currency}}</div>
     </div>

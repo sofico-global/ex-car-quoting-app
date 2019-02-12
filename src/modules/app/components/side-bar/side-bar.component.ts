@@ -14,9 +14,8 @@ import { Option } from '../../types/option.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="car">
-      <app-active-selection *ngIf="car"
-                            [car]="car"></app-active-selection>
-      
+      <app-active-selection [car]="car"></app-active-selection>
+
       <hr>
 
       <div class="lease-price-section d-flex justify-content-between align-items-center">
@@ -25,7 +24,7 @@ import { Option } from '../../types/option.type';
       </div>
     </ng-container>
 
-    <hr *ngIf="filtersEnabled  || selectedOptionsEnabled">
+    <hr *ngIf="car && (filtersEnabled  || selectedOptionsEnabled)">
 
     <app-filters *ngIf="filtersEnabled"
                  [form]="form"
