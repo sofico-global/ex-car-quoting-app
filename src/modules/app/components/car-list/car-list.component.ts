@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input
 } from '@angular/core';
@@ -7,6 +8,7 @@ import { Car } from '../../types/car.type';
 @Component({
   selector: 'app-car-list',
   styleUrls: ['./car-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="row">
       <div *ngFor="let car of cars; trackBy: tracker" class="col-sm-2 col-md-6">

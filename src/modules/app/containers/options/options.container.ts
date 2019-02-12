@@ -44,10 +44,7 @@ import {
         </table>
       </div>
       <div class="col-4">
-        <div class="filters">
-          <app-active-selection *ngIf="activeSelection$ | async as activeSelection"
-                                [car]="activeSelection"></app-active-selection>
-        </div>
+        <app-side-bar [car]="activeSelection$ | async"></app-side-bar>
       </div>
     </div>
   `

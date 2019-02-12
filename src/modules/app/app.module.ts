@@ -14,6 +14,8 @@ import { FormControlMultiCheckboxComponent } from './components/form-control-mul
 import { CarService } from './services/car.service';
 import { FilterService } from './services/filter.service';
 import { ActiveSelectionComponent } from './components/active-selection/active-selection.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { FiltersComponent } from './components/filters/filters.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ActiveSelectionComponent } from './components/active-selection/active-s
     CarListComponent,
     CarListItemComponent,
     FormControlMultiCheckboxComponent,
-    ActiveSelectionComponent
+    ActiveSelectionComponent,
+    SideBarComponent,
+    FiltersComponent
   ],
   imports: [
     BrowserModule,

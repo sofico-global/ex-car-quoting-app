@@ -31,32 +31,14 @@ import { ActivatedRoute } from '@angular/router';
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
       <div class="col-4">
-        <div class="filters">
-          <app-active-selection *ngIf="activeSelection$ | async as activeSelection" 
-                                [car]="activeSelection"></app-active-selection>
-          <br>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, beatae commodi corporis dolor ducimus earum illum in iusto
-          nulla perferendis quis quod, recusandae temporibus? Culpa deleniti dolore itaque qui sapiente.
-        </div>
-        <br>
-        <div class="filters">
-          <h6>Make</h6>
-          <app-form-control-multi-checkbox *ngIf="form.get('makes') as ctrl"
-                                           [formControl]="ctrl"
-                                           [filters]="filterMakes"></app-form-control-multi-checkbox>
-          <br>
-          <h6>Fuel type</h6>
-          <app-form-control-multi-checkbox *ngIf="form.get('fuelTypes') as ctrl"
-                                           [formControl]="ctrl"
-                                           [filters]="filterFuelTypes"></app-form-control-multi-checkbox>
-          <br>
-          <h6>Gearbox</h6>
-          <app-form-control-multi-checkbox *ngIf="form.get('gearboxes') as ctrl"
-                                           [formControl]="ctrl"
-                                           [filters]="filterGearboxes"></app-form-control-multi-checkbox>
-        </div>
+        <app-side-bar [car]="activeSelection$ | async">
+          <app-filters [form]="form"
+                       [filterMakes]="filterMakes"
+                       [filterFuelTypes]="filterFuelTypes"
+                       [filterGearboxes]="filterGearboxes"></app-filters>
+        </app-side-bar>
       </div>
-    </div>  `
+    </div>`
 })
 export class CarsContainer implements OnInit {
   filterMakes: FilterValue[];
