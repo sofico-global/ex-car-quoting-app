@@ -18,6 +18,9 @@ import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { FiltersComponent } from './components/filters/filters.component';
 import { OptionService } from './services/option.service';
 import { OptionsListComponent } from './components/options-list/options-list.component';
+import { rootReducer } from '../statemanagement/root.reducer';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { OptionsListComponent } from './components/options-list/options-list.com
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot(rootReducer),
+    StoreDevtoolsModule.instrument(),
   ],
   providers: [CarService, FilterService, OptionService],
   bootstrap: [AppContainer]

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   filter,
@@ -8,6 +11,9 @@ import {
 } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Step } from '../../types/step.type';
+import { Store } from '@ngrx/store';
+import { ApplicationState } from '../../../statemanagement/application.state';
+import { ClearOptionsAction } from '../../../statemanagement/actions';
 
 @Component({
   selector: 'app-configurator',
@@ -28,7 +34,7 @@ import { Step } from '../../types/step.type';
     <router-outlet></router-outlet>
   `
 })
-export class ConfiguratorContainer {
+export class ConfiguratorContainer implements OnInit {
   // source streams
   carId$ = this.activatedRoute.params.pipe(
     filter(params => params && params.carId),
@@ -59,6 +65,13 @@ export class ConfiguratorContainer {
     })
   );
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private store: Store<ApplicationState>) {
+  }
+
+  ngOnInit(): void {
+    this.carId$.subscribe(() => {
+      this.store.dispatch(new ClearOptionsAction());
+    });
   }
 }
