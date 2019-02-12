@@ -1,12 +1,14 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input
 } from '@angular/core';
 import { Car } from '../../types/car.type';
 
 @Component({
-  selector: 'app-active-selection',
-  styleUrls: ['./active-selection.component.scss'],
+  selector: 'app-active-car-selection',
+  styleUrls: ['./active-car-selection.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="image" [ngStyle]="{'background-image': 'url(' + car?.imgUrl + ')'}"></div>
     <div class="specifications">
@@ -15,6 +17,6 @@ import { Car } from '../../types/car.type';
     </div>
   `
 })
-export class ActiveSelectionComponent {
+export class ActiveCarSelectionComponent {
   @Input() car: Car;
 }

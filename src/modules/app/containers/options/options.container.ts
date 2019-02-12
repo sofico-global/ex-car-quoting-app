@@ -12,18 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 import {
   filter,
   map,
-  switchMap
+  mergeMap,
+  publishReplay,
+  refCount
 } from 'rxjs/operators';
-import { OptionService } from '../../services/option.service';
-import { ApplicationState } from '../../../statemanagement/application.state';
-import {
-  select,
-  Store
-} from '@ngrx/store';
-import {
-  AddOptionAction,
-  RemoveOptionAction
-} from '../../../statemanagement/actions';
 import {
   sortBy,
   unionBy
@@ -43,13 +35,13 @@ import { AppSandbox } from '../../app.sandbox';
                          (removeOption)="onRemoveOption($event)"></app-option-list>
         <h2>Options</h2>
         <br>
-        <app-option-list [options]="options$ | async"
+        <app-option-list [options]="singleOptions$ | async"
                          (addOption)="onAddOption($event)"
                          (removeOption)="onRemoveOption($event)"></app-option-list>
       </div>
       <div class="col-4">
         <app-side-bar [car]="activeSelection$ | async"
-                      [selectedOptions]="selectedCatalogOptions$ | async"
+                      [selectedOptions]="selectedOptions$ | async"
                       [leasePrice]="leasePrice$ | async"
                       [selectedOptionsEnabled]="true">
         </app-side-bar>
@@ -62,14 +54,14 @@ export class OptionsContainer implements OnInit {
   carId$: Observable<string>;
 
   // intermediate streams
-  catalogOptions$: Observable<Option[]>;
-  selectedCatalogOptions$: Observable<Option[]>;
-  combinedCatalogOptions$: Observable<Option[]>;
+  options$: Observable<Option[]>;
+  selectedOptions$: Observable<Option[]>;
+  combinedOptions$: Observable<Option[]>;
 
   // presentation streams
   activeSelection$: Observable<Car>;
   packs$: Observable<Option[]>;
-  options$: Observable<Option[]>;
+  singleOptions$: Observable<Option[]>;
   leasePrice$: Observable<number>;
 
   constructor(private sb: AppSandbox,
@@ -80,30 +72,34 @@ export class OptionsContainer implements OnInit {
     // source streams
     this.carId$ = this.activatedRoute.params.pipe(
       filter(params => params && params.carId),
-      map(params => params.carId)
+      map(params => params.carId),
+      publishReplay(1),
+      refCount()
     );
 
     // intermediate streams
-    this.catalogOptions$ = this.carId$.pipe(
-      switchMap(carId => this.sb.getOptions(carId))
+    this.options$ = this.carId$.pipe(
+      mergeMap(carId => this.sb.getOptions(carId))
     );
-    this.selectedCatalogOptions$ = this.sb.selectedOptions$;
-    this.combinedCatalogOptions$ = combineLatest(
-      this.catalogOptions$,
-      this.selectedCatalogOptions$
+    this.selectedOptions$ = this.sb.selectedOptions$;
+    this.combinedOptions$ = combineLatest(
+      this.options$,
+      this.selectedOptions$
     ).pipe(
       map(([catalogOptions, selectedCatalogOptions]) => unionBy(selectedCatalogOptions, catalogOptions, 'optionId')),
-      map(catalogOptions => sortBy(catalogOptions, 'description'))
+      map(catalogOptions => sortBy(catalogOptions, 'description')),
+      publishReplay(1),
+      refCount()
     );
 
     // presentation streams
     this.activeSelection$ = this.carId$.pipe(
-      switchMap(carId => this.sb.getCar(carId))
+      mergeMap(carId => this.sb.getCar(carId))
     );
-    this.packs$ = this.combinedCatalogOptions$.pipe(
+    this.packs$ = this.combinedOptions$.pipe(
       map(options => options.filter(option => option.optionType === 'pack'))
     );
-    this.options$ = this.combinedCatalogOptions$.pipe(
+    this.singleOptions$ = this.combinedOptions$.pipe(
       map(options => options.filter(option => option.optionType === 'option'))
     );
     this.leasePrice$ = this.sb.leasePrice$;

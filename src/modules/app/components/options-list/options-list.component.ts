@@ -9,7 +9,7 @@ import { Option } from '../../types/option.type';
 
 @Component({
   selector: 'app-option-list',
-  styleUrls: [],
+  styleUrls: ['./options-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="options?.length > 0; else noOptions">
@@ -31,7 +31,7 @@ import { Option } from '../../types/option.type';
           </td>
           <td>{{option?.description}}</td>
           <td>{{option?.optionCode}}</td>
-          <td class="text-right">{{option?.price | currency}}</td>
+          <td class="text-right">{{option?.price | currency: 'EUR' : 'symbol'}}</td>
         </tr>
         </tbody>
       </table>

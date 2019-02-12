@@ -7,15 +7,17 @@ import {
   FormGroup
 } from '@angular/forms';
 import {
+  BehaviorSubject,
   combineLatest,
   Observable
 } from 'rxjs';
 import { Car } from '../../types/car.type';
 import {
+  debounceTime,
   filter,
   map,
-  startWith,
-  switchMap
+  mergeMap,
+  startWith
 } from 'rxjs/operators';
 import { FilterValue } from '../../types/filter-value.type';
 import { ActivatedRoute } from '@angular/router';
@@ -27,6 +29,12 @@ import { AppSandbox } from '../../app.sandbox';
   template: `
     <div class="row">
       <div class="col-8">
+        <div class="form-group">
+          <input type="text" 
+                 class="form-control" 
+                 placeholder="Search your car" 
+                 (keyup)="searchTerm$.next($event.target.value)">
+        </div>
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
       <div class="col-4">
@@ -51,6 +59,10 @@ export class CarsContainer implements OnInit {
   // source streams
   carId$: Observable<string>;
   cars$: Observable<Car[]>;
+  searchTerm$: BehaviorSubject<string>;
+
+  // intermediate streams
+  optimizedSeachTerm$: Observable<string>;
 
   // presentation streams
   filteredCars$: Observable<Car[]>;
@@ -76,27 +88,38 @@ export class CarsContainer implements OnInit {
     // source streams
     this.carId$ = this.activatedRoute.params.pipe(
       filter(params => params && params.carId),
-      map(params => params.carId),
+      map(params => params.carId)
     );
     this.cars$ = this.sb.getCars();
+    this.searchTerm$ = new BehaviorSubject('');
+
+    // intermediate streams
+    this.optimizedSeachTerm$ = this.searchTerm$.pipe(debounceTime(200));
 
     // presentation streams
     this.filteredCars$ = combineLatest(
       this.cars$,
+      this.optimizedSeachTerm$,
       this.form.get('makes').valueChanges.pipe(startWith([])),
       this.form.get('fuelTypes').valueChanges.pipe(startWith([])),
       this.form.get('gearboxes').valueChanges.pipe(startWith([]))
     ).pipe(
-      map(([cars, filterMakes, filterFuelTypes, filterGearboxes]) =>
-        this.filterCars(
-          cars,
+      map(([cars, searchTerm, filterMakes, filterFuelTypes, filterGearboxes]) => {
+        const searchResult = cars.filter(car => {
+          const searchableString = car.make.name + car.model;
+          return searchableString.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        return this.filterCars(
+          searchResult,
           filterMakes,
           filterFuelTypes,
-          filterGearboxes)
-      )
+          filterGearboxes
+        );
+      })
     );
     this.activeSelection$ = this.carId$.pipe(
-      switchMap(carId => this.sb.getCar(carId))
+      mergeMap(carId => this.sb.getCar(carId))
     );
     this.leasePrice$ = this.sb.leasePrice$;
   }

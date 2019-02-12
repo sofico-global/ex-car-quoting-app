@@ -8,6 +8,7 @@ import { Car } from '../../types/car.type';
 import {
   filter,
   map,
+  mergeMap,
   switchMap
 } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -54,7 +55,7 @@ export class SummaryContainer implements OnInit {
 
     // presentation streams
     this.activeSelection$ = this.carId$.pipe(
-      switchMap(carId => this.sb.getCar(carId))
+      mergeMap(carId => this.sb.getCar(carId))
     );
     this.selectedOptions$ = this.sb.selectedOptions$;
     this.leasePrice$ = this.sb.leasePrice$;

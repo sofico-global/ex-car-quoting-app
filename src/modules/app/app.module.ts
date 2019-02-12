@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {
+  LOCALE_ID,
+  NgModule
+} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppContainer } from './containers/app/app.container';
@@ -13,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormControlMultiCheckboxComponent } from './components/form-control-multi-checkbox/form-control-multi-checkbox.component';
 import { CarService } from './services/car.service';
 import { FilterService } from './services/filter.service';
-import { ActiveSelectionComponent } from './components/active-selection/active-selection.component';
+import { ActiveCarSelectionComponent } from './components/active-selection/active-car-selection.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { FiltersComponent } from './components/filters/filters.component';
 import { OptionService } from './services/option.service';
@@ -25,6 +28,13 @@ import { SelectedOptionListComponent } from './components/selected-option-list/s
 import { LeasePriceService } from './services/lease-price.service';
 import { AppSandbox } from './app.sandbox';
 import { HttpClientModule } from '@angular/common/http';
+import { LeasePriceComponent } from './components/lease-price/lease-price.component';
+import { registerLocaleData } from '@angular/common';
+import localeNl from '@angular/common/locales/nl';
+import { SelectedOptionListItemComponent } from './components/selected-option-list/selected-option-list-item.component';
+
+// register locales
+registerLocaleData(localeNl);
 
 @NgModule({
   declarations: [
@@ -36,11 +46,13 @@ import { HttpClientModule } from '@angular/common/http';
     CarListComponent,
     CarListItemComponent,
     FormControlMultiCheckboxComponent,
-    ActiveSelectionComponent,
+    ActiveCarSelectionComponent,
     SideBarComponent,
     FiltersComponent,
     OptionsListComponent,
-    SelectedOptionListComponent
+    SelectedOptionListComponent,
+    SelectedOptionListItemComponent,
+    LeasePriceComponent
   ],
   imports: [
     BrowserModule,
@@ -48,14 +60,15 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     ReactiveFormsModule,
     StoreModule.forRoot(rootReducer),
-    StoreDevtoolsModule.instrument(),
+    StoreDevtoolsModule.instrument()
   ],
   providers: [
     AppSandbox,
     CarService,
     FilterService,
     OptionService,
-    LeasePriceService
+    LeasePriceService,
+    { provide: LOCALE_ID, useValue: 'nl-BE' },
   ],
   bootstrap: [AppContainer]
 })

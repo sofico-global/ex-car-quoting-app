@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+
+  .lease-price-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .lease-price {
+      font-size: 1.75rem;
+    }
+  }
+}

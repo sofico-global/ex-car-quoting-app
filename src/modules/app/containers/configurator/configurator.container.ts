@@ -7,9 +7,12 @@ import { ActivatedRoute } from '@angular/router';
 import {
   filter,
   map,
+  publishReplay,
+  refCount,
   startWith,
   switchMap,
-  takeUntil
+  takeUntil,
+  tap
 } from 'rxjs/operators';
 import {
   combineLatest,
@@ -17,9 +20,6 @@ import {
   Subject
 } from 'rxjs';
 import { Step } from '../../types/step.type';
-import { Store } from '@ngrx/store';
-import { ApplicationState } from '../../../statemanagement/application.state';
-import { ClearOptionsAction } from '../../../statemanagement/actions';
 import { AppSandbox } from '../../app.sandbox';
 
 @Component({
@@ -58,7 +58,9 @@ export class ConfiguratorContainer implements OnInit, OnDestroy {
     this.destroy$ = new Subject<any>();
     this.carId$ = this.activatedRoute.params.pipe(
       filter(params => params && params.carId),
-      map(params => params.carId)
+      map(params => params.carId),
+      publishReplay(1),
+      refCount()
     );
 
     // presentation streams

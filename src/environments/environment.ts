@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3010/'
+  baseUrl: 'https://sofico-car-quoting-api.rver.be/'
 };
 
 /*

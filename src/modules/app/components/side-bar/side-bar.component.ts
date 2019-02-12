@@ -14,21 +14,9 @@ import { Option } from '../../types/option.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="car">
-      <app-active-selection [car]="car"></app-active-selection>
-
+      <app-active-car-selection [car]="car"></app-active-car-selection>
       <hr>
-
-      <div class="lease-price-section d-flex justify-content-between align-items-center">
-        <div>Monthly rental</div>
-        <ng-container *ngIf="leasePrice; else calculating">
-          <div class="lease-price text-primary">{{leasePrice | currency}}</div>
-        </ng-container>
-        <ng-template #calculating>
-          <div class="spinner-border text-secondary">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </ng-template>
-      </div>
+      <app-lease-price [leasePrice]="leasePrice"></app-lease-price>
     </ng-container>
 
     <hr *ngIf="car && (filtersEnabled  || selectedOptionsEnabled)">
@@ -40,7 +28,7 @@ import { Option } from '../../types/option.type';
                  [filterGearboxes]="filterGearboxes"></app-filters>
 
     <app-selected-option-list *ngIf="selectedOptionsEnabled"
-                              [selectedOptions]="selectedOptions"></app-selected-option-list>
+                              [options]="selectedOptions"></app-selected-option-list>
   `
 })
 export class SideBarComponent {

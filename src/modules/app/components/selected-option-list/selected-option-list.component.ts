@@ -11,12 +11,15 @@ import { Option } from '../../types/option.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h5>Selected options</h5>
-    <div *ngFor="let option of selectedOptions" class="d-flex justify-content-between">
-      <div>{{option?.description}}</div>
-      <div>{{option?.price | currency}}</div>
-    </div>
+    <ng-container *ngIf="options && options?.length > 0; else noOptions">
+      <app-selected-option-list-item *ngFor="let option of options"
+                                     [option]="option"></app-selected-option-list-item>
+    </ng-container>
+    <ng-template #noOptions>
+      No options selected.
+    </ng-template>
   `
 })
 export class SelectedOptionListComponent {
-  @Input() selectedOptions: Option[];
+  @Input() options: Option[];
 }
