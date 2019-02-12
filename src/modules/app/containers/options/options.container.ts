@@ -13,35 +13,20 @@ import {
   map,
   switchMap
 } from 'rxjs/operators';
+import { OptionService } from '../../services/option.service';
 
 @Component({
   selector: 'app-options',
   styleUrls: ['./options.container.scss'],
-  template: `    
+  template: `
     <div class="row">
       <div class="col-8">
         <h2>Packs</h2>
         <br>
-        <table class="table">
-          <thead>
-          <tr>
-            <th></th>
-            <th>Description</th>
-            <th>Option code</th>
-            <th class="text-right">Price</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let option of options">
-            <td>
-              <input type="checkbox" name="" id="">
-            </td>
-            <td>{{option?.description}}</td>
-            <td>{{option?.optionCode}}</td>
-            <td class="text-right">{{option?.price | currency}}</td>
-          </tr>
-          </tbody>
-        </table>
+        <app-option-list [options]="packs$ | async"></app-option-list>
+        <h2>Options</h2>
+        <br>
+        <app-option-list [options]="options$ | async"></app-option-list>
       </div>
       <div class="col-4">
         <app-side-bar [car]="activeSelection$ | async"></app-side-bar>
@@ -50,30 +35,21 @@ import {
   `
 })
 export class OptionsContainer implements OnInit {
-  options: Option[] = [
-    {
-      optionId: '1',
-      description: 'Technology pack',
-      optionCode: 'ABC123',
-      price: 1500
-    },
-    {
-      optionId: '2',
-      description: 'Heated seats',
-      optionCode: 'ABC124',
-      price: 700
-    }
-  ];
-
   // source streams
   carId$: Observable<string>;
 
+  // intermediate streams
+  catalogOptions$: Observable<Option[]>;
+
   // presentation streams
   activeSelection$: Observable<Car>;
+  packs$: Observable<Option[]>;
+  options$: Observable<Option[]>;
 
   constructor(private activatedRoute: ActivatedRoute,
               private filterService: FilterService,
-              private carService: CarService) {
+              private carService: CarService,
+              private optionService: OptionService) {
   }
 
   ngOnInit(): void {
@@ -83,9 +59,20 @@ export class OptionsContainer implements OnInit {
       map(params => params.carId)
     );
 
+    // intermediate streams
+    this.catalogOptions$ = this.carId$.pipe(
+      switchMap(carId => this.optionService.find(carId))
+    );
+
     // presentation streams
     this.activeSelection$ = this.carId$.pipe(
       switchMap(carId => this.carService.findOne(carId))
+    );
+    this.packs$ = this.catalogOptions$.pipe(
+      map(options => options.filter(option => option.optionType === 'pack'))
+    );
+    this.options$ = this.catalogOptions$.pipe(
+      map(options => options.filter(option => option.optionType === 'option'))
     );
   }
 }

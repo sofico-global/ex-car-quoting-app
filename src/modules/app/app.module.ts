@@ -16,6 +16,8 @@ import { FilterService } from './services/filter.service';
 import { ActiveSelectionComponent } from './components/active-selection/active-selection.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { FiltersComponent } from './components/filters/filters.component';
+import { OptionService } from './services/option.service';
+import { OptionsListComponent } from './components/options-list/options-list.component';
 
 @NgModule({
   declarations: [
@@ -29,14 +31,15 @@ import { FiltersComponent } from './components/filters/filters.component';
     FormControlMultiCheckboxComponent,
     ActiveSelectionComponent,
     SideBarComponent,
-    FiltersComponent
+    FiltersComponent,
+    OptionsListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [CarService, FilterService],
+  providers: [CarService, FilterService, OptionService],
   bootstrap: [AppContainer]
 })
 export class AppModule {
