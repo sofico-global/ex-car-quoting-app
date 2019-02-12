@@ -22,6 +22,8 @@ import { rootReducer } from '../statemanagement/root.reducer';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SelectedOptionListComponent } from './components/selected-option-list/selected-option-list.component';
+import { LeasePriceService } from './services/lease-price.service';
+import { AppSandbox } from './app.sandbox';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,13 @@ import { SelectedOptionListComponent } from './components/selected-option-list/s
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument(),
   ],
-  providers: [CarService, FilterService, OptionService],
+  providers: [
+    AppSandbox,
+    CarService,
+    FilterService,
+    OptionService,
+    LeasePriceService
+  ],
   bootstrap: [AppContainer]
 })
 export class AppModule {

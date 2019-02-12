@@ -17,5 +17,6 @@ function type<T>(label: T | ''): T {
 export const ActionTypes = {
   ADD_OPTION: type<'ADD_OPTION'>('ADD_OPTION'),
   REMOVE_OPTION: type<'REMOVE_OPTION'>('REMOVE_OPTION'),
-  CLEAR_OPTIONS: type<'CLEAR_OPTIONS'>('CLEAR_OPTIONS')
+  CLEAR_OPTIONS: type<'CLEAR_OPTIONS'>('CLEAR_OPTIONS'),
+  SET_LEASE_PRICE: type<'SET_LEASE_PRICE'>('SET_LEASE_PRICE')
 };

@@ -9,8 +9,6 @@ import {
 } from 'rxjs';
 import { Car } from '../../types/car.type';
 import { ActivatedRoute } from '@angular/router';
-import { FilterService } from '../../services/filter.service';
-import { CarService } from '../../services/car.service';
 import {
   filter,
   map,
@@ -30,6 +28,7 @@ import {
   sortBy,
   unionBy
 } from 'lodash';
+import { AppSandbox } from '../../app.sandbox';
 
 @Component({
   selector: 'app-options',
@@ -51,6 +50,7 @@ import {
       <div class="col-4">
         <app-side-bar [car]="activeSelection$ | async"
                       [selectedOptions]="selectedCatalogOptions$ | async"
+                      [leasePrice]="leasePrice$ | async"
                       [selectedOptionsEnabled]="true">
         </app-side-bar>
       </div>
@@ -70,12 +70,10 @@ export class OptionsContainer implements OnInit {
   activeSelection$: Observable<Car>;
   packs$: Observable<Option[]>;
   options$: Observable<Option[]>;
+  leasePrice$: Observable<number>;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private filterService: FilterService,
-              private carService: CarService,
-              private optionService: OptionService,
-              private store: Store<ApplicationState>) {
+  constructor(private sb: AppSandbox,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -87,9 +85,9 @@ export class OptionsContainer implements OnInit {
 
     // intermediate streams
     this.catalogOptions$ = this.carId$.pipe(
-      switchMap(carId => this.optionService.find(carId))
+      switchMap(carId => this.sb.getOptions(carId))
     );
-    this.selectedCatalogOptions$ = this.store.pipe(select(state => state.options));
+    this.selectedCatalogOptions$ = this.sb.selectedOptions$;
     this.combinedCatalogOptions$ = combineLatest(
       this.catalogOptions$,
       this.selectedCatalogOptions$
@@ -100,7 +98,7 @@ export class OptionsContainer implements OnInit {
 
     // presentation streams
     this.activeSelection$ = this.carId$.pipe(
-      switchMap(carId => this.carService.findOne(carId))
+      switchMap(carId => this.sb.getCar(carId))
     );
     this.packs$ = this.combinedCatalogOptions$.pipe(
       map(options => options.filter(option => option.optionType === 'pack'))
@@ -108,13 +106,14 @@ export class OptionsContainer implements OnInit {
     this.options$ = this.combinedCatalogOptions$.pipe(
       map(options => options.filter(option => option.optionType === 'option'))
     );
+    this.leasePrice$ = this.sb.leasePrice$;
   }
 
   onAddOption(option: Option): void {
-    this.store.dispatch(new AddOptionAction(option));
+    this.sb.addOption(option);
   }
 
   onRemoveOption(optionId: string): void {
-    this.store.dispatch(new RemoveOptionAction(optionId));
+    this.sb.removeOption(optionId);
   }
 }

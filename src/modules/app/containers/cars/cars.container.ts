@@ -17,10 +17,9 @@ import {
   startWith,
   switchMap
 } from 'rxjs/operators';
-import { CarService } from '../../services/car.service';
 import { FilterValue } from '../../types/filter-value.type';
-import { FilterService } from '../../services/filter.service';
 import { ActivatedRoute } from '@angular/router';
+import { AppSandbox } from '../../app.sandbox';
 
 @Component({
   selector: 'app-cars',
@@ -36,7 +35,8 @@ import { ActivatedRoute } from '@angular/router';
                       [filterMakes]="filterMakes"
                       [filterFuelTypes]="filterFuelTypes"
                       [filterGearboxes]="filterGearboxes"
-                      [filtersEnabled]="true">
+                      [filtersEnabled]="true"
+                      [leasePrice]="leasePrice$ | async">
         </app-side-bar>
       </div>
     </div>`
@@ -55,17 +55,17 @@ export class CarsContainer implements OnInit {
   // presentation streams
   filteredCars$: Observable<Car[]>;
   activeSelection$: Observable<Car>;
+  leasePrice$: Observable<number>;
 
-  constructor(private fb: FormBuilder,
-              private activatedRoute: ActivatedRoute,
-              private filterService: FilterService,
-              private carService: CarService) {
+  constructor(private sb: AppSandbox,
+              private fb: FormBuilder,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.filterMakes = this.filterService.filterMakes;
-    this.filterFuelTypes = this.filterService.filterFuelTypes;
-    this.filterGearboxes = this.filterService.filterGearboxes;
+    this.filterMakes = this.sb.getFilterMakes();
+    this.filterFuelTypes = this.sb.getFilterFuelTypes();
+    this.filterGearboxes = this.sb.getFilterGearboxes();
 
     this.form = this.fb.group({
       makes: [[]],
@@ -78,7 +78,7 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId),
     );
-    this.cars$ = this.carService.find();
+    this.cars$ = this.sb.getCars();
 
     // presentation streams
     this.filteredCars$ = combineLatest(
@@ -96,8 +96,9 @@ export class CarsContainer implements OnInit {
       )
     );
     this.activeSelection$ = this.carId$.pipe(
-      switchMap(carId => this.carService.findOne(carId))
+      switchMap(carId => this.sb.getCar(carId))
     );
+    this.leasePrice$ = this.sb.leasePrice$;
   }
 
   private filterCars(

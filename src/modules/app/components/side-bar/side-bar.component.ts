@@ -20,7 +20,14 @@ import { Option } from '../../types/option.type';
 
       <div class="lease-price-section d-flex justify-content-between align-items-center">
         <div>Monthly rental</div>
-        <div class="lease-price text-primary">€ 520,50</div>
+        <ng-container *ngIf="leasePrice; else calculating">
+          <div class="lease-price text-primary">{{leasePrice | currency}}</div>
+        </ng-container>
+        <ng-template #calculating>
+          <div class="spinner-border text-secondary">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </ng-template>
       </div>
     </ng-container>
 
@@ -43,6 +50,7 @@ export class SideBarComponent {
   @Input() filterFuelTypes: FilterValue[];
   @Input() filterGearboxes: FilterValue[];
   @Input() selectedOptions: Option[];
+  @Input() leasePrice: number;
 
   @Input() filtersEnabled = false;
   @Input() selectedOptionsEnabled = false;

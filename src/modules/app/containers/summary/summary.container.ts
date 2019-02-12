@@ -4,11 +4,6 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Option } from '../../types/option.type';
-import {
-  select,
-  Store
-} from '@ngrx/store';
-import { ApplicationState } from '../../../statemanagement/application.state';
 import { Car } from '../../types/car.type';
 import {
   filter,
@@ -16,8 +11,8 @@ import {
   switchMap
 } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { CarService } from '../../services/car.service';
 import { sortBy } from 'lodash';
+import { AppSandbox } from '../../app.sandbox';
 
 @Component({
   selector: 'app-summary',
@@ -29,7 +24,8 @@ import { sortBy } from 'lodash';
         <app-option-list [options]="selectedOptions$ | async" [disabled]="true"></app-option-list>
       </div>
       <div class="col-4">
-        <app-side-bar [car]="activeSelection$ | async"></app-side-bar>
+        <app-side-bar [car]="activeSelection$ | async"
+                      [leasePrice]="leasePrice$ | async"></app-side-bar>
       </div>
     </div>
   `
@@ -41,10 +37,11 @@ export class SummaryContainer implements OnInit {
   // presentation streams
   activeSelection$: Observable<Car>;
   selectedOptions$: Observable<Option[]>;
+  leasePrice$: Observable<number>;
 
-  constructor(private store: Store<ApplicationState>,
-              private activatedRoute: ActivatedRoute,
-              private carService: CarService) {
+
+  constructor(private sb: AppSandbox,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -57,11 +54,9 @@ export class SummaryContainer implements OnInit {
 
     // presentation streams
     this.activeSelection$ = this.carId$.pipe(
-      switchMap(carId => this.carService.findOne(carId))
+      switchMap(carId => this.sb.getCar(carId))
     );
-    this.selectedOptions$ = this.store.pipe(
-      select(state => state.options),
-      map(catalogOptions => sortBy(catalogOptions, 'description'))
-    );
+    this.selectedOptions$ = this.sb.selectedOptions$;
+    this.leasePrice$ = this.sb.leasePrice$;
   }
 }
