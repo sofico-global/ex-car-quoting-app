@@ -13,20 +13,16 @@ import { Option } from '../../types/option.type';
   styleUrls: ['./side-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="car">
-      <app-active-car-selection [car]="car"></app-active-car-selection>
-      <hr>
-      <app-lease-price [leasePrice]="leasePrice"></app-lease-price>
-    </ng-container>
-
-    <hr *ngIf="car && (filtersEnabled  || selectedOptionsEnabled)">
-
+    <app-active-car-selection *ngIf="car" [car]="car"></app-active-car-selection>
+    
+    <app-lease-price *ngIf="car" [leasePrice]="leasePrice"></app-lease-price>
+    
     <app-filters *ngIf="filtersEnabled"
                  [form]="form"
                  [filterMakes]="filterMakes"
                  [filterFuelTypes]="filterFuelTypes"
                  [filterGearboxes]="filterGearboxes"></app-filters>
-
+    
     <app-selected-option-list *ngIf="selectedOptionsEnabled"
                               [options]="selectedOptions"></app-selected-option-list>
   `
