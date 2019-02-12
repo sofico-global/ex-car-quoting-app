@@ -31,11 +31,12 @@ import { ActivatedRoute } from '@angular/router';
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
       <div class="col-4">
-        <app-side-bar [car]="activeSelection$ | async">
-          <app-filters [form]="form"
-                       [filterMakes]="filterMakes"
-                       [filterFuelTypes]="filterFuelTypes"
-                       [filterGearboxes]="filterGearboxes"></app-filters>
+        <app-side-bar [car]="activeSelection$ | async"
+                      [form]="form"
+                      [filterMakes]="filterMakes"
+                      [filterFuelTypes]="filterFuelTypes"
+                      [filterGearboxes]="filterGearboxes"
+                      [filtersEnabled]="true">
         </app-side-bar>
       </div>
     </div>`

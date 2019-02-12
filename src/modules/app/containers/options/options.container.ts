@@ -26,7 +26,10 @@ import {
   AddOptionAction,
   RemoveOptionAction
 } from '../../../statemanagement/actions';
-import { unionBy, sortBy } from 'lodash';
+import {
+  sortBy,
+  unionBy
+} from 'lodash';
 
 @Component({
   selector: 'app-options',
@@ -46,7 +49,10 @@ import { unionBy, sortBy } from 'lodash';
                          (removeOption)="onRemoveOption($event)"></app-option-list>
       </div>
       <div class="col-4">
-        <app-side-bar [car]="activeSelection$ | async"></app-side-bar>
+        <app-side-bar [car]="activeSelection$ | async"
+                      [selectedOptions]="selectedCatalogOptions$ | async"
+                      [selectedOptionsEnabled]="true">
+        </app-side-bar>
       </div>
     </div>
   `

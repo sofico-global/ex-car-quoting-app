@@ -47,12 +47,12 @@ export class ConfiguratorContainer implements OnInit {
     map(carId => {
       return [
         {
-          label: 'Make & model',
+          label: 'Car',
           path: '/configurator/' + (carId ? carId + '/cars' : 'cars'),
           accessible: true
         },
         {
-          label: 'Packs & options',
+          label: 'Options',
           path: carId ? '/configurator/' + carId + '/options' : null,
           accessible: !!carId
         },

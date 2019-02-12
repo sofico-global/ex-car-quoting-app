@@ -15,8 +15,6 @@ function type<T>(label: T | ''): T {
 
 /* ignore coverage */
 export const ActionTypes = {
-  SET_CAR: type<'SET_CAR'>('SET_CAR'),
-  CLEAR_CAR: type<'CLEAR_CAR'>('CLEAR_CAR'),
   ADD_OPTION: type<'ADD_OPTION'>('ADD_OPTION'),
   REMOVE_OPTION: type<'REMOVE_OPTION'>('REMOVE_OPTION'),
   CLEAR_OPTIONS: type<'CLEAR_OPTIONS'>('CLEAR_OPTIONS')

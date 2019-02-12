@@ -21,6 +21,7 @@ import { OptionsListComponent } from './components/options-list/options-list.com
 import { rootReducer } from '../statemanagement/root.reducer';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SelectedOptionListComponent } from './components/selected-option-list/selected-option-list.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     ActiveSelectionComponent,
     SideBarComponent,
     FiltersComponent,
-    OptionsListComponent
+    OptionsListComponent,
+    SelectedOptionListComponent
   ],
   imports: [
     BrowserModule,
