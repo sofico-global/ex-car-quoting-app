@@ -24,6 +24,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SelectedOptionListComponent } from './components/selected-option-list/selected-option-list.component';
 import { LeasePriceService } from './services/lease-price.service';
 import { AppSandbox } from './app.sandbox';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AppSandbox } from './app.sandbox';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     ReactiveFormsModule,
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument(),

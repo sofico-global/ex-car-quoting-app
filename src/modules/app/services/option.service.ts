@@ -4,53 +4,14 @@ import {
   Observable,
   of
 } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class OptionService {
-  private options: Option[] = [
-    {
-      optionId: '1',
-      description: 'Technology pack',
-      optionCode: '123',
-      optionType: 'pack',
-      price: 1500,
-      isSelected: false
-    },
-    {
-      optionId: '2',
-      description: 'Business pack',
-      optionCode: '124',
-      optionType: 'pack',
-      price: 3200,
-      isSelected: false
-    },
-    {
-      optionId: '3',
-      description: 'Tow bar',
-      optionCode: '452',
-      optionType: 'option',
-      price: 980,
-      isSelected: false
-    },
-    {
-      optionId: '4',
-      description: 'Heated front window',
-      optionCode: '554',
-      optionType: 'option',
-      price: 700,
-      isSelected: false
-    },
-    {
-      optionId: '5',
-      description: 'Heated steering wheel',
-      optionCode: '783',
-      optionType: 'option',
-      price: 150,
-      isSelected: false
-    }
-  ];
+  constructor(private httpClient: HttpClient) {}
 
   find(carId: string): Observable<Option[]> {
-    return of(this.options);
+    return this.httpClient.get<Option[]>(environment.baseUrl + 'options/' + carId);
   }
 }
