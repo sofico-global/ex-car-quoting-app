@@ -27,7 +27,7 @@ import { AppSandbox } from '../../app.sandbox';
   styleUrls: ['./options.container.scss'],
   template: `
     <div class="row">
-      <div class="col-8">
+      <div class="col-sm-7 col-md-8">
         <h2>Packs</h2>
         <br>
         <app-option-list [options]="packs$ | async"
@@ -39,7 +39,7 @@ import { AppSandbox } from '../../app.sandbox';
                          (addOption)="onAddOption($event)"
                          (removeOption)="onRemoveOption($event)"></app-option-list>
       </div>
-      <div class="col-4">
+      <div class="col-sm-5 col-md-4">
         <app-side-bar [car]="activeSelection$ | async"
                       [selectedOptions]="selectedOptions$ | async"
                       [leasePrice]="leasePrice$ | async"

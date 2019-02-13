@@ -19,12 +19,12 @@ import { AppSandbox } from '../../app.sandbox';
   selector: 'app-summary',
   template: `
     <div class="row">
-      <div class="col-8">
+      <div class="col-sm-7 col-md-8">
         <h2>Selected options</h2>
         <br>
         <app-option-list [options]="selectedOptions$ | async" [disabled]="true"></app-option-list>
       </div>
-      <div class="col-4">
+      <div class="col-sm-5 col-md-4">
         <app-side-bar [car]="activeSelection$ | async"
                       [leasePrice]="leasePrice$ | async"></app-side-bar>
       </div>

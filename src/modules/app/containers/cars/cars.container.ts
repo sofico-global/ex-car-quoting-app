@@ -28,7 +28,7 @@ import { AppSandbox } from '../../app.sandbox';
   styleUrls: ['./cars.container.scss'],
   template: `
     <div class="row">
-      <div class="col-8">
+      <div class="col-sm-7 col-md-8">
         <div class="form-group">
           <input type="text" 
                  class="form-control" 
@@ -37,7 +37,7 @@ import { AppSandbox } from '../../app.sandbox';
         </div>
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
-      <div class="col-4">
+      <div class="col-sm-5 col-md-4">
         <app-side-bar [car]="activeSelection$ | async"
                       [form]="form"
                       [filterMakes]="filterMakes"
