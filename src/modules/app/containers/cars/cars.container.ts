@@ -74,8 +74,6 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId)
     );
-    // TODO: make sure the cars$ stream is recalculated when multiple subscribers are active
-    // TODO: tip: share, shareReplay
     this.cars$ = this.sb.getCars().pipe(
       shareReplay({refCount: true})
     );

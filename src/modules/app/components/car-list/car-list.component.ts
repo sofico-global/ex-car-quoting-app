@@ -15,4 +15,9 @@ import {Car} from '../../types/car.type';
 })
 export class CarListComponent {
   @Input() cars: Car[];
+
+  // TODO: create a trackBy function based in the index
+  // TODO: apply the trackBy accordingly to the ngFor
+  trackByFn = null;
+
 }
