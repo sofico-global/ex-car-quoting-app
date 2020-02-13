@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Car} from '../../types/car.type';
 import {filter, map} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
@@ -16,9 +16,10 @@ import {AppSandbox} from '../../app.sandbox';
         <div class="form-group">
           <input type="text"
                  class="form-control"
-                 placeholder="Search your car">
+                 placeholder="Search your car"
+                 (input)="searchTerm$.next($event?.target?.value)">
         </div>
-        <app-car-list [cars]="cars$ | async"></app-car-list>
+        <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
       <div class="col-sm-5 col-md-4">
         <app-side-bar
@@ -41,12 +42,12 @@ export class CarsContainer implements OnInit {
 
   // source streams
   carId$: Observable<string>;
-
-  // presentation streams
+  searchTerm$ = new BehaviorSubject('');
   cars$: Observable<Car[]>;
 
-  // TODO: add the AppSandbox as dependency
-  // TODO: remove both FilterService and CarService as dependency
+  // presentation streams
+  filteredCars$: Observable<Car[]>;
+
   constructor(private fb: FormBuilder,
               private activatedRoute: ActivatedRoute,
               private sb: AppSandbox) {
@@ -68,8 +69,11 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId)
     );
+    this.cars$ = this.sb.getCars();
 
     // presentation streams
-    this.cars$ = this.sb.getCars();
+    // TODO: combine both the cars$ observable as the searchTerm$ observable, using both create a filtered cars list
+    // TODO: tip: combineLatest
+    this.filteredCars$ = this.cars$;
   }
 }
