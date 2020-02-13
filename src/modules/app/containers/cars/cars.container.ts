@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {Car} from '../../types/car.type';
-import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, share, shareReplay} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
 import {ActivatedRoute} from '@angular/router';
 import {AppSandbox} from '../../app.sandbox';
@@ -74,7 +74,9 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId)
     );
-    this.cars$ = this.sb.getCars();
+    this.cars$ = this.sb.getCars().pipe(
+      shareReplay({refCount: true})
+    );
 
     // intermediate streams
     this.optimizedSearchTerm$ = this.searchTerm$.pipe(
@@ -96,6 +98,8 @@ export class CarsContainer implements OnInit {
     );
     // TODO: calculate number of cars based on the filteredCars$ observable
     // TODO: remove of(0) and implement
-    this.numberOfCars$ = of(0);
+    this.numberOfCars$ = this.filteredCars$.pipe(
+      map(cars => cars.length)
+    );
   }
 }
