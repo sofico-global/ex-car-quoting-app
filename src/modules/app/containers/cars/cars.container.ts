@@ -6,6 +6,7 @@ import {filter, map} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
 import {ActivatedRoute} from '@angular/router';
 import {FilterService} from '../../services/filter.service';
+import {CarService} from '../../services/car.service';
 
 @Component({
   selector: 'app-cars',
@@ -18,7 +19,7 @@ import {FilterService} from '../../services/filter.service';
                  class="form-control"
                  placeholder="Search your car">
         </div>
-        <app-car-list></app-car-list>
+        <app-car-list [cars]="cars$ | async"></app-car-list>
       </div>
       <div class="col-sm-5 col-md-4">
         <app-side-bar
@@ -39,15 +40,18 @@ export class CarsContainer implements OnInit {
 
   form: FormGroup;
 
+  // source streams
   carId$: Observable<string>;
 
+  // presentation streams
   // TODO: initialize the stream with the correct observable
   cars$: Observable<Car[]>;
 
   // TODO: import the correct service to fetch the list of cars
   constructor(private fb: FormBuilder,
               private activatedRoute: ActivatedRoute,
-              private filterService: FilterService) {
+              private filterService: FilterService,
+              private  carService: CarService) {
   }
 
   ngOnInit(): void {
@@ -66,5 +70,8 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId)
     );
+
+    // presentation streams
+    this.cars$ = this.carService.find();
   }
 }

@@ -1,7 +1,5 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {Car} from '../../types/car.type';
-import {CarService} from '../../services/car.service';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-car-list',
@@ -9,7 +7,7 @@ import {Observable} from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="row">
-      <div *ngFor="let car of cars$ | async;" class="col-sm-12 col-md-6">
+      <div *ngFor="let car of cars;" class="col-sm-12 col-md-6">
         <app-car-list-item [car]="car" [routerLink]="['/', 'configurator', car?.carId, 'options']"></app-car-list-item>
       </div>
     </div>
@@ -20,9 +18,5 @@ export class CarListComponent {
   // TODO: move the responsibilities of fetching data to the respective smart component
   // TODO: and pass along the data from top to bottom using the @Input decorator
   // TODO: update the template accordingly (tip: the "| async" pipe is not needed anymore)
-
-  cars$: Observable<Car[]> = this.carService.find();
-
-  constructor(private carService: CarService) {
-  }
+  @Input() cars: Car[];
 }
