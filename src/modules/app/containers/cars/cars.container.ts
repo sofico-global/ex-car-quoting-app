@@ -74,9 +74,7 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId)
     );
-    this.cars$ = this.sb.getCars().pipe(
-      shareReplay({refCount: true})
-    );
+    this.cars$ = this.sb.getCars();
 
     // intermediate streams
     this.optimizedSearchTerm$ = this.searchTerm$.pipe(
