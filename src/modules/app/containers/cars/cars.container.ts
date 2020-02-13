@@ -5,8 +5,7 @@ import {Car} from '../../types/car.type';
 import {filter, map} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
 import {ActivatedRoute} from '@angular/router';
-import {FilterService} from '../../services/filter.service';
-import {CarService} from '../../services/car.service';
+import {AppSandbox} from '../../app.sandbox';
 
 @Component({
   selector: 'app-cars',
@@ -50,14 +49,13 @@ export class CarsContainer implements OnInit {
   // TODO: remove both FilterService and CarService as dependency
   constructor(private fb: FormBuilder,
               private activatedRoute: ActivatedRoute,
-              private filterService: FilterService,
-              private carService: CarService) {
+              private sb: AppSandbox) {
   }
 
   ngOnInit(): void {
-    this.filterMakes = this.filterService.filterMakes;
-    this.filterFuelTypes = this.filterService.filterFuelTypes;
-    this.filterGearboxes = this.filterService.filterGearboxes;
+    this.filterMakes = this.sb.getFilterMakes();
+    this.filterFuelTypes = this.sb.getFilterFuelTypes();
+    this.filterGearboxes = this.sb.getFilterGearboxes();
 
     this.form = this.fb.group({
       makes: [[]],
@@ -72,6 +70,6 @@ export class CarsContainer implements OnInit {
     );
 
     // presentation streams
-    this.cars$ = this.carService.find();
+    this.cars$ = this.sb.getCars();
   }
 }
