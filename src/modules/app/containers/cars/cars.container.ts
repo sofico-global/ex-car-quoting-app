@@ -30,9 +30,9 @@ import { AppSandbox } from '../../app.sandbox';
     <div class="row">
       <div class="col-sm-7 col-md-8">
         <div class="form-group">
-          <input type="text" 
-                 class="form-control" 
-                 placeholder="Search your car" 
+          <input type="text"
+                 class="form-control"
+                 placeholder="Search your car"
                  (keyup)="searchTerm$.next($event.target.value)">
         </div>
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
@@ -133,15 +133,15 @@ export class CarsContainer implements OnInit {
     let tmpCars = cars;
 
     if (filterMakes.length > 0) {
-      tmpCars = tmpCars.filter(car => !!filterMakes.find(filter => filter.filterId === car.make.makeId));
+      tmpCars = tmpCars.filter(car => !!filterMakes.find(fm => fm.filterId === car.make.makeId));
     }
 
     if (filterFuelTypes.length > 0) {
-      tmpCars = tmpCars.filter(car => !!filterFuelTypes.find(filter => filter.filterId === car.fuelType.fuelTypeId));
+      tmpCars = tmpCars.filter(car => !!filterFuelTypes.find(fft => fft.filterId === car.fuelType.fuelTypeId));
     }
 
     if (filterGearboxes.length > 0) {
-      tmpCars = tmpCars.filter(car => !!filterGearboxes.find(filter => filter.filterId === car.gearbox.gearboxId));
+      tmpCars = tmpCars.filter(car => !!filterGearboxes.find(fg => fg.filterId === car.gearbox.gearboxId));
     }
 
     return tmpCars;
