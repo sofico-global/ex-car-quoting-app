@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import {Car} from '../../types/car.type';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
@@ -19,6 +19,7 @@ import {AppSandbox} from '../../app.sandbox';
                  placeholder="Search your car"
                  (input)="searchTerm$.next($event?.target?.value)">
         </div>
+        <p class="text-right">{{numberOfCars$ | async}} car(s) displayed</p>
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
       </div>
       <div class="col-sm-5 col-md-4">
@@ -50,6 +51,7 @@ export class CarsContainer implements OnInit {
 
   // presentation streams
   filteredCars$: Observable<Car[]>;
+  numberOfCars$: Observable<number>;
 
   constructor(private fb: FormBuilder,
               private activatedRoute: ActivatedRoute,
@@ -75,10 +77,6 @@ export class CarsContainer implements OnInit {
     this.cars$ = this.sb.getCars();
 
     // intermediate streams
-    // TODO: the search term must only pass when:
-    // TODO: - the term consists our of more than 3 characters, make sure you cover the case when the searchTerm's number of characters is 0 (filter)
-    // TODO: - don't allow twice (just after each other) the same term (distinct...)
-    // TODO: - make sure that the term is only passed down when the user has stopped typing for 200ms (debounceTime)
     this.optimizedSearchTerm$ = this.searchTerm$.pipe(
       filter(searchTerm => searchTerm.length === 0 || searchTerm.length > 3),
       distinctUntilChanged(),
@@ -86,7 +84,6 @@ export class CarsContainer implements OnInit {
     );
 
     // presentation streams
-    // TODO: make sure the filteredCars$ observable makes us of the optimizedSearchTerm$ observable
     this.filteredCars$ = combineLatest([
       this.cars$,
       this.optimizedSearchTerm$
@@ -97,5 +94,8 @@ export class CarsContainer implements OnInit {
         );
       })
     );
+    // TODO: calculate number of cars based on the filteredCars$ observable
+    // TODO: remove of(0) and implement
+    this.numberOfCars$ = of(0);
   }
 }
