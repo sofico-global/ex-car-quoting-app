@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Car} from '../../types/car.type';
-import {filter, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
 import {ActivatedRoute} from '@angular/router';
 import {AppSandbox} from '../../app.sandbox';
@@ -79,13 +79,17 @@ export class CarsContainer implements OnInit {
     // TODO: - the term consists our of more than 3 characters, make sure you cover the case when the searchTerm's number of characters is 0 (filter)
     // TODO: - don't allow twice (just after each other) the same term (distinct...)
     // TODO: - make sure that the term is only passed down when the user has stopped typing for 200ms (debounceTime)
-    this.optimizedSearchTerm$ = this.searchTerm$;
+    this.optimizedSearchTerm$ = this.searchTerm$.pipe(
+      filter(searchTerm => searchTerm.length === 0 || searchTerm.length > 3),
+      distinctUntilChanged(),
+      debounceTime(200)
+    );
 
     // presentation streams
     // TODO: make sure the filteredCars$ observable makes us of the optimizedSearchTerm$ observable
     this.filteredCars$ = combineLatest([
       this.cars$,
-      this.searchTerm$
+      this.optimizedSearchTerm$
     ]).pipe(
       map(([cars, searchTerm]) => {
         return cars.filter(car =>
