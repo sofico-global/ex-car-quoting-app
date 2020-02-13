@@ -1,9 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input
-} from '@angular/core';
-import { Car } from '../../types/car.type';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Car} from '../../types/car.type';
+import {CarService} from '../../services/car.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-car-list',
@@ -11,14 +9,15 @@ import { Car } from '../../types/car.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="row">
-      <div *ngFor="let car of cars; trackBy: tracker" class="col-sm-12 col-md-6">
+      <div *ngFor="let car of cars$ | async;" class="col-sm-12 col-md-6">
         <app-car-list-item [car]="car" [routerLink]="['/', 'configurator', car?.carId, 'options']"></app-car-list-item>
       </div>
     </div>
   `
 })
 export class CarListComponent {
-  @Input() cars: Car[];
+  cars$: Observable<Car[]> = this.carService.find();
 
-  tracker = (i) => i;
+  constructor(private carService: CarService) {
+  }
 }

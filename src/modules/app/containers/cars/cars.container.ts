@@ -35,7 +35,7 @@ import { AppSandbox } from '../../app.sandbox';
                  placeholder="Search your car"
                  (keyup)="searchTerm$.next($event.target.value)">
         </div>
-        <app-car-list [cars]="filteredCars$ | async"></app-car-list>
+        <app-car-list></app-car-list>
       </div>
       <div class="col-sm-5 col-md-4">
         <app-side-bar [car]="activeSelection$ | async"
