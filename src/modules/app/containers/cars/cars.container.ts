@@ -45,6 +45,9 @@ export class CarsContainer implements OnInit {
   searchTerm$ = new BehaviorSubject('');
   cars$: Observable<Car[]>;
 
+  // intermediate streams
+  optimizedSearchTerm$: Observable<string>;
+
   // presentation streams
   filteredCars$: Observable<Car[]>;
 
@@ -71,9 +74,15 @@ export class CarsContainer implements OnInit {
     );
     this.cars$ = this.sb.getCars();
 
+    // intermediate streams
+    // TODO: the search term must only pass when:
+    // TODO: - the term consists our of more than 3 characters (filter)
+    // TODO: - don't allow twice (just after each other) the same term (distinct...)
+    // TODO: - make sure that the term is only passed down when the user has stopped typing for 200ms (debounceTime)
+    this.optimizedSearchTerm$ = this.searchTerm$;
+
     // presentation streams
-    // TODO: combine both the cars$ observable as the searchTerm$ observable, using both create a filtered cars list
-    // TODO: tip: combineLatest
+    // TODO: make sure the filteredCars$ observable makes us of the optimizedSearchTerm$ observable
     this.filteredCars$ = combineLatest([
       this.cars$,
       this.searchTerm$
