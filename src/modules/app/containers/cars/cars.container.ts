@@ -76,7 +76,7 @@ export class CarsContainer implements OnInit {
 
     // intermediate streams
     // TODO: the search term must only pass when:
-    // TODO: - the term consists our of more than 3 characters (filter)
+    // TODO: - the term consists our of more than 3 characters, make sure you cover the case when the searchTerm's number of characters is 0 (filter)
     // TODO: - don't allow twice (just after each other) the same term (distinct...)
     // TODO: - make sure that the term is only passed down when the user has stopped typing for 200ms (debounceTime)
     this.optimizedSearchTerm$ = this.searchTerm$;
