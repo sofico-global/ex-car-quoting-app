@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Car} from '../../types/car.type';
-import {debounceTime, distinctUntilChanged, filter, map, share, shareReplay} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, shareReplay} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
 import {ActivatedRoute} from '@angular/router';
 import {AppSandbox} from '../../app.sandbox';
@@ -76,7 +76,9 @@ export class CarsContainer implements OnInit {
     );
     // TODO: make sure the cars$ stream is recalculated when multiple subscribers are active
     // TODO: tip: share, shareReplay
-    this.cars$ = this.sb.getCars();
+    this.cars$ = this.sb.getCars().pipe(
+      shareReplay({refCount: true})
+    );
 
     // intermediate streams
     this.optimizedSearchTerm$ = this.searchTerm$.pipe(
