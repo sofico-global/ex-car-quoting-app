@@ -25,6 +25,7 @@ import {LeasePriceComponent} from './components/lease-price/lease-price.componen
 import {registerLocaleData} from '@angular/common';
 import localeNl from '@angular/common/locales/nl';
 import {SelectedOptionListItemComponent} from './components/selected-option-list/selected-option-list-item.component';
+import {AppSandbox} from './app.sandbox';
 
 // register locales
 registerLocaleData(localeNl);
@@ -54,6 +55,7 @@ registerLocaleData(localeNl);
     ReactiveFormsModule
   ],
   providers: [
+    AppSandbox,
     CarService,
     FilterService,
     OptionService,
