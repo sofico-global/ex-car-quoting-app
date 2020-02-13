@@ -44,14 +44,14 @@ export class CarsContainer implements OnInit {
   carId$: Observable<string>;
 
   // presentation streams
-  // TODO: initialize the stream with the correct observable
   cars$: Observable<Car[]>;
 
-  // TODO: import the correct service to fetch the list of cars
+  // TODO: add the AppSandbox as dependency
+  // TODO: remove both FilterService and CarService as dependency
   constructor(private fb: FormBuilder,
               private activatedRoute: ActivatedRoute,
               private filterService: FilterService,
-              private  carService: CarService) {
+              private carService: CarService) {
   }
 
   ngOnInit(): void {
