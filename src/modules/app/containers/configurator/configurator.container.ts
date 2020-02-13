@@ -1,26 +1,8 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import {
-  filter,
-  map,
-  publishReplay,
-  refCount,
-  startWith,
-  switchMap,
-  takeUntil,
-  tap
-} from 'rxjs/operators';
-import {
-  combineLatest,
-  Observable,
-  Subject
-} from 'rxjs';
-import { Step } from '../../types/step.type';
-import { AppSandbox } from '../../app.sandbox';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {filter, map, publishReplay, refCount, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {Step} from '../../types/step.type';
 
 @Component({
   selector: 'app-configurator',
@@ -41,21 +23,18 @@ import { AppSandbox } from '../../app.sandbox';
     <router-outlet></router-outlet>
   `
 })
-export class ConfiguratorContainer implements OnInit, OnDestroy {
+export class ConfiguratorContainer implements OnInit {
   // source streams
-  destroy$: Subject<any>;
   carId$: Observable<string>;
 
   // presentation streams
   steps$: Observable<Step[]>;
 
-  constructor(private sb: AppSandbox,
-              private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     // source streams
-    this.destroy$ = new Subject<any>();
     this.carId$ = this.activatedRoute.params.pipe(
       filter(params => params && params.carId),
       map(params => params.carId),
@@ -65,28 +44,6 @@ export class ConfiguratorContainer implements OnInit, OnDestroy {
 
     // presentation streams
     this.steps$ = this.getSteps$();
-
-    this.carId$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.sb.clearOptions();
-    });
-
-    combineLatest(
-      this.carId$,
-      this.sb.selectedOptions$
-    ).pipe(
-      switchMap(([carId, selectedOptions]) =>
-        this.sb.calculate(
-          carId,
-          selectedOptions.map(option => option.optionId))
-      ),
-      takeUntil(this.destroy$)
-    ).subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
   }
 
   private getSteps$(): Observable<Step[]> {
