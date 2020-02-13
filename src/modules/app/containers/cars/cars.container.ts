@@ -74,6 +74,8 @@ export class CarsContainer implements OnInit {
       filter(params => params && params.carId),
       map(params => params.carId)
     );
+    // TODO: make sure the cars$ stream is recalculated when multiple subscribers are active
+    // TODO: tip: share, shareReplay
     this.cars$ = this.sb.getCars();
 
     // intermediate streams
@@ -94,8 +96,6 @@ export class CarsContainer implements OnInit {
         );
       })
     );
-    // TODO: calculate number of cars based on the filteredCars$ observable
-    // TODO: remove of(0) and implement
     this.numberOfCars$ = this.filteredCars$.pipe(
       map(cars => cars.length)
     );
