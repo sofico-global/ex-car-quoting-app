@@ -10,6 +10,9 @@ Files that require changes:
 - /modules/app/containers/cars.container.ts
 - /modules/app/components/car-list.component.ts
 
+Documentation:
+- https://angular.io/guide/inputs-outputs
+
 ## 2020-002
 
 Sandbox pattern.
@@ -24,6 +27,10 @@ Reactive programming: create search.
 
 Files that require changes:
 - /modules/app/containers/cars.container.ts
+
+Documentation:
+- https://rxmarbles.com/#combineLatest
+- https://rxmarbles.com/#merge
 
 ## 2020-004
 
