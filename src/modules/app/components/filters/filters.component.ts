@@ -13,18 +13,18 @@ import { FormGroup } from '@angular/forms';
   template: `
     <h5>Filters</h5>
     <h6>Make</h6>
-    <app-form-control-multi-checkbox *ngIf="form.get('makes') as ctrl"
-                                     [formControl]="ctrl"
+    <app-form-control-multi-checkbox *ngIf="form.controls.makes as ctrl"
+                                     [formControl]="$any(ctrl)"
                                      [filters]="filterMakes"></app-form-control-multi-checkbox>
     <br>
     <h6>Fuel type</h6>
-    <app-form-control-multi-checkbox *ngIf="form.get('fuelTypes') as ctrl"
-                                     [formControl]="ctrl"
+    <app-form-control-multi-checkbox *ngIf="form.controls.fuelTypes as ctrl"
+                                     [formControl]="$any(ctrl)"
                                      [filters]="filterFuelTypes"></app-form-control-multi-checkbox>
     <br>
     <h6>Gearbox</h6>
-    <app-form-control-multi-checkbox *ngIf="form.get('gearboxes') as ctrl"
-                                     [formControl]="ctrl"
+    <app-form-control-multi-checkbox *ngIf="form.controls.gearboxes as ctrl"
+                                     [formControl]="$any(ctrl)"
                                      [filters]="filterGearboxes"></app-form-control-multi-checkbox>
   `
 })
