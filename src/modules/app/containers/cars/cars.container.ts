@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, combineLatest} from 'rxjs';
 import {Car} from '../../types/car.type';
 import {filter, map} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
@@ -74,6 +74,14 @@ export class CarsContainer implements OnInit {
     // presentation streams
     // TODO: combine both the cars$ observable as the searchTerm$ observable, using both create a filtered cars list
     // TODO: tip: combineLatest
+    // TODO: Add the following operator after `combineLatest`. This will make sure the list is properly filtered when a user searches.
+    // .pipe(
+    //  map(([cars, searchTerm]) => {
+    //    return cars.filter(car =>
+    //      (car.make.name + car.model + car.type).toLowerCase().includes(searchTerm.toLowerCase())
+    //    );
+    //  })
+    //)
     this.filteredCars$ = this.cars$;
   }
 }
