@@ -10,11 +10,11 @@ export class CarService {
   }
 
   find(): Observable<Car[]> {
-    return this.httpClient.get<Car[]>('https://api.jsonbin.io/b/5e45a45fd18e4016617821ce');
+    return this.httpClient.get<Car[]>('https://sofico-global.github.io/ex-car-quoting-app/data.json');
   }
 
   findOne(carId: string): Observable<Car> {
-    return this.httpClient.get<Car[]>('https://api.jsonbin.io/b/5e45a45fd18e4016617821ce').pipe(
+    return this.httpClient.get<Car[]>('https://sofico-global.github.io/ex-car-quoting-app/data.json').pipe(
       map(cars => cars.find(car => car.carId === carId))
     );
   }
