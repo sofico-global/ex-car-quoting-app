@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {Car} from '../../types/car.type';
-import {filter, map} from 'rxjs/operators';
+import {filter, map, debounceTime, distinctUntilChanged, distinct} from 'rxjs/operators';
 import {FilterValue} from '../../types/filter-value.type';
 import {ActivatedRoute} from '@angular/router';
 import {AppSandbox} from '../../app.sandbox';
