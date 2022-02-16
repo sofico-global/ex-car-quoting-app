@@ -23,11 +23,12 @@ import {
   template: `
     <ng-container *ngFor="let filter of filters">
       <div class="form-check">
-        <input class="form-check-input" 
-               type="checkbox" 
+        <input #checkboxRef
+               class="form-check-input"
+               type="checkbox"
                [checked]="isChecked(filter)"
                [id]="filter?.filterId"
-               (input)="onToggle($event?.target?.checked, filter)">
+               (input)="onToggle(checkboxRef.checked, filter)">
         <label class="form-check-label" [for]="filter?.filterId">{{filter?.value}}</label>
       </div>
     </ng-container>
