@@ -14,10 +14,11 @@ import {AppSandbox} from '../../app.sandbox';
     <div class="row">
       <div class="col-sm-7 col-md-8">
         <div class="form-group">
-          <input type="text"
+          <input #searchRef
+                 type="text"
                  class="form-control"
                  placeholder="Search your car"
-                 (input)="searchTerm$.next($event?.target?.value)">
+                 (input)="searchTerm$.next(searchRef?.value)">
         </div>
         <p class="text-right">{{numberOfCars$ | async}} car(s) displayed</p>
         <app-car-list [cars]="filteredCars$ | async"></app-car-list>
