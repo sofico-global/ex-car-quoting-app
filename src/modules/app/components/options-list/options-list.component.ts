@@ -25,9 +25,10 @@ import { Option } from '../../types/option.type';
         <tbody>
         <tr *ngFor="let option of options">
           <td *ngIf="!disabled">
-            <input type="checkbox"
+            <input #checkboxRef
+                   type="checkbox"
                    [checked]="option?.isSelected"
-                   (change)="onToggleOption(option, $event.target.checked)">
+                   (change)="onToggleOption(option, checkboxRef.checked)">
           </td>
           <td>{{option?.description}}</td>
           <td>{{option?.optionCode}}</td>
