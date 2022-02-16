@@ -13,6 +13,9 @@ Files that require changes:
 Documentation:
 - https://angular.io/guide/inputs-outputs
 
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-001
+
 ## 2020-002
 
 Sandbox pattern.
@@ -20,6 +23,9 @@ Sandbox pattern.
 Files that require changes:
 - /modules/app/containers/cars.container.ts
 - /modules/app/app.sandbox.ts
+
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-002
 
 ## 2020-003
 
@@ -32,12 +38,18 @@ Documentation:
 - https://rxmarbles.com/#combineLatest
 - https://rxmarbles.com/#merge
 
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-003
+
 ## 2020-004
 
 Reactive programming: optimise search.
 
 Files that require changes:
 - /modules/app/containers/cars.container.ts
+
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-004
 
 ## 2020-005
 
@@ -46,6 +58,9 @@ Reactive programming: display the number of cars.
 Files that require changes:
 - /modules/app/containers/cars.container.ts
 
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-005
+
 ## 2020-006
 
 Reactive programming: hot and cold observable (multiple calls).
@@ -53,9 +68,15 @@ Reactive programming: hot and cold observable (multiple calls).
 Files that require changes:
 - /modules/app/containers/cars.container.ts
 
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-006
+
 ## 2020-007
 
 Performance lists: trackBy.
 
 Files that require changes:
 - /modules/app/components/car-list.component.ts
+
+Stackblitz:<br>
+https://stackblitz.com/github/sofico-global/ex-car-quoting-app/tree/2020-007
